@@ -1,0 +1,6 @@
+{
+  "name": "Squishy Dumpling Co.",
+  "description": "The official clone of squishydumplings.co featuring slow-rising dim sum squishy toys, collectible bamboo steamers, interactive squish simulator, bundle builder, and sensory shop.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

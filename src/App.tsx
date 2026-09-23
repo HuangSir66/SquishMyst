@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ShoppingBag } from 'lucide-react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { OfficialDropSection } from './components/OfficialDropSection';
@@ -306,6 +307,31 @@ export default function App() {
         onOpenTracking={() => setIsTrackingOpen(true)}
         onOpenContact={() => setIsContactOpen(true)}
       />
+
+      {/* Floating Mobile Cart Trigger Pill (shows on mobile when cart has items) */}
+      {totalCartCount > 0 && !isCartOpen && (
+        <div className="fixed bottom-5 right-4 z-40 md:hidden animate-scaleUp">
+          <button
+            id="mobile-floating-cart-btn"
+            onClick={() => {
+              playPopSound();
+              setIsCartOpen(true);
+            }}
+            className="bg-[#1F1C18] text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 border-2 border-[#FFE27A] hover:bg-[#E25C40] transition-all active:scale-95 cursor-pointer"
+            aria-label="View shopping cart"
+          >
+            <div className="relative">
+              <ShoppingBag className="w-5 h-5 text-[#FFE27A]" />
+              <span className="absolute -top-2 -right-2 bg-[#E25C40] text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-white">
+                {totalCartCount}
+              </span>
+            </div>
+            <span className="text-xs font-black tracking-wide">
+              Basket • ${(cartItems.reduce((acc, i) => acc + i.product.price * i.quantity, 0)).toFixed(2)}
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* Cart Drawer */}
       <CartDrawer

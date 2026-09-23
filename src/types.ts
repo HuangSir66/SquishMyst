@@ -1,6 +1,8 @@
 // Shopify OS 2.0 Compatible Data Types & Schemas
 
 export type ProductSalesMode = 'blind_box' | 'direct_purchase' | 'chase_exclusive';
+export type ToyType = 'dumpling' | 'animal' | 'bakery' | 'fruit' | 'accessories' | 'sets';
+export type ToyTexture = 'slow_rise' | 'jelly_water' | 'sugar_clay' | 'flocked_velvet';
 
 export interface ShopifyOption {
   name: string;
@@ -32,8 +34,10 @@ export interface DumplingProduct {
   originalPrice?: number;
   rating: number;
   reviewsCount: number;
-  tag?: 'Bestseller' | 'Viral on TikTok' | 'Limited Edition' | 'New' | 'Mystery' | 'Chase Rare';
+  tag?: 'Bestseller' | 'Viral on TikTok' | 'Limited Edition' | 'New' | 'Mystery' | 'Chase Rare' | 'Community Fav';
   category: 'blindbox' | 'direct_pick' | 'flavors' | 'sets' | 'jumbo' | 'accessories' | 'chase_vault';
+  toyType?: ToyType; // e.g. 'dumpling' | 'animal' | 'bakery' | 'fruit' | 'accessories' | 'sets'
+  textureType?: ToyTexture; // 'slow_rise' | 'jelly_water' | 'sugar_clay' | 'flocked_velvet'
   salesMode: ProductSalesMode; // 'blind_box' | 'direct_purchase' | 'chase_exclusive'
   isChaseExclusive?: boolean; // If true, cannot be directly purchased; only unboxed from mystery boxes
   chaseOdds?: string; // e.g. "1 in 24 boxes (4.1%)"
@@ -53,8 +57,35 @@ export interface DumplingProduct {
   options?: ShopifyOption[];
   variants: ProductVariant[];
   rarity?: 'Common' | 'Rare' | 'Super Rare' | 'Secret Legendary';
-  svgArtType: 'classic' | 'custard' | 'matcha' | 'taro' | 'strawberry' | 'charcoal' | 'ghost' | 'jumbo' | 'blindbox' | 'chilioil' | 'steamer-empty' | 'set6';
+  svgArtType:
+    | 'classic'
+    | 'custard'
+    | 'matcha'
+    | 'taro'
+    | 'strawberry'
+    | 'charcoal'
+    | 'ghost'
+    | 'jumbo'
+    | 'blindbox'
+    | 'chilioil'
+    | 'steamer-empty'
+    | 'set6'
+    | 'capybara'
+    | 'shiba'
+    | 'corgi'
+    | 'cat_paw'
+    | 'bunny'
+    | 'panda'
+    | 'croissant'
+    | 'donut'
+    | 'toast'
+    | 'peach'
+    | 'cheese'
+    | 'mochi'
+    | 'boba';
 }
+
+export type SquishyProduct = DumplingProduct;
 
 // Shopify Cart Line Item with Line Item Properties support
 export interface ShopifyLineItemProperty {

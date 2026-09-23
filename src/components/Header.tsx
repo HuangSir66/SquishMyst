@@ -52,11 +52,11 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-[#E8DAC6] shadow-xs">
       
-      {/* Top Banner: Exact match to Screenshot 1 */}
+      {/* Top Banner */}
       <div className="bg-gradient-to-r from-[#FF5C38] via-[#FF6A3D] to-[#FF8A3D] text-white text-xs font-black py-2 px-4 text-center tracking-wide flex items-center justify-center gap-2 cursor-pointer hover:opacity-95 transition-opacity"
         onClick={() => handleNavClick('mystery-pack')}
       >
-        <span>LIMITED DUMPLING SQUISHY DROP | FREE US SHIPPING OVER $50</span>
+        <span>LIMITED SQUISHY TOY STUDIO DROP • DUMPLINGS, ANIMALS & PASTRIES | FREE US SHIPPING OVER $50</span>
         <ArrowRight className="w-3.5 h-3.5 inline" />
       </div>
 
@@ -64,12 +64,12 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo Brand: Exact match with Mascot + "Squishy Dumpling" rounded wordmark */}
+          {/* Logo Brand */}
           <div
             onClick={() => handleNavClick('hero')}
             className="flex items-center gap-3 cursor-pointer select-none group"
           >
-            {/* Mascot in bamboo steamer badge */}
+            {/* Mascot badge */}
             <div className="w-12 h-12 bg-[#FFDF40] rounded-2xl flex items-center justify-center p-1 border-2 border-[#734E24] shadow-xs group-hover:scale-105 transition-transform">
               <svg viewBox="0 0 100 100" className="w-full h-full">
                 {/* Steamer basket */}
@@ -82,17 +82,13 @@ export const Header: React.FC<HeaderProps> = ({
                   stroke="#734E24"
                   strokeWidth="4"
                 />
-                {/* Pleats top swirl */}
                 <path d="M 46 24 C 48 18, 52 18, 54 24" fill="none" stroke="#734E24" strokeWidth="3" strokeLinecap="round" />
-                {/* Eyes */}
                 <circle cx="42" cy="46" r="3.5" fill="#2D2A26" />
                 <circle cx="58" cy="46" r="3.5" fill="#2D2A26" />
                 <circle cx="43" cy="44.5" r="1.2" fill="#FFF" />
                 <circle cx="59" cy="44.5" r="1.2" fill="#FFF" />
-                {/* Blush */}
                 <ellipse cx="37" cy="52" rx="4" ry="2.5" fill="#FF9EAA" opacity="0.8" />
                 <ellipse cx="63" cy="52" rx="4" ry="2.5" fill="#FF9EAA" opacity="0.8" />
-                {/* Smile */}
                 <path d="M 47 52 Q 50 56 53 52" fill="none" stroke="#734E24" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
             </div>
@@ -100,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex flex-col">
               <span className="font-display font-black text-2xl sm:text-3xl text-[#6B4219] tracking-tight leading-none">
                 Squishy<br />
-                <span className="text-[#8B5625] text-xl sm:text-2xl">Dumpling</span>
+                <span className="text-[#8B5625] text-xl sm:text-2xl">Studio</span>
               </span>
             </div>
           </div>
@@ -114,44 +110,58 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => setRangeDropdownOpen(!rangeDropdownOpen)}
                 className="flex items-center gap-1 hover:text-[#FF5C38] transition-colors py-2 cursor-pointer"
               >
-                <span>Our Range</span>
+                <span>Toy Collections</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${rangeDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {rangeDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-2xl border-2 border-[#E8DAC6] shadow-xl py-2 z-50 animate-fadeIn">
+                <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-2xl border-2 border-[#E8DAC6] shadow-xl py-2 z-50 animate-fadeIn">
                   <button
                     onClick={() => handleNavClick('mystery-pack')}
                     className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors flex items-center justify-between"
                   >
-                    <span>Mystery Dumpling Squishy</span>
-                    <span className="text-[10px] bg-[#FFE27A] text-[#734E24] px-1.5 py-0.5 rounded font-black">DROP</span>
+                    <span>🐾 Cute Animals & Pets</span>
+                    <span className="text-[10px] bg-[#FEF3C7] text-[#92400E] px-1.5 py-0.5 rounded font-black">VIRAL</span>
                   </button>
                   <button
-                    onClick={() => handleNavClick('world-cup')}
+                    onClick={() => handleNavClick('mystery-pack')}
                     className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors flex items-center justify-between"
                   >
-                    <span>World Cup Flag Series</span>
-                    <span className="text-[10px] bg-[#DBEAFE] text-[#1E40AF] px-1.5 py-0.5 rounded font-black">FLAGS</span>
+                    <span>🥐 Bakery & Sweets</span>
+                    <span className="text-[10px] bg-[#FDE68A] text-[#B45309] px-1.5 py-0.5 rounded font-black">SCENTED</span>
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('mystery-pack')}
+                    className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors flex items-center justify-between"
+                  >
+                    <span>🍑 Fruits & Snacks</span>
+                    <span className="text-[10px] bg-[#FECDD3] text-[#9F1239] px-1.5 py-0.5 rounded font-black">VELVET</span>
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('mystery-pack')}
+                    className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors flex items-center justify-between"
+                  >
+                    <span>🥟 Dim Sum Dumplings</span>
+                    <span className="text-[10px] bg-[#FFE27A] text-[#734E24] px-1.5 py-0.5 rounded font-black">ORIGINAL</span>
                   </button>
                   <button
                     onClick={() => handleNavClick('golden-ticket')}
                     className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors flex items-center justify-between"
                   >
-                    <span>Golden Ticket 24K Chase</span>
+                    <span>✨ 24K Golden Ticket Chase</span>
                     <span className="text-[10px] bg-[#FEF08A] text-[#854D0E] px-1.5 py-0.5 rounded font-black">1 of 1</span>
                   </button>
                   <button
                     onClick={() => handleNavClick('bundles')}
                     className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors"
                   >
-                    Steamer Pack Bundles
+                    🎁 Custom Steamer & Gift Bundles
                   </button>
                   <button
                     onClick={() => handleNavClick('squish-lab')}
                     className="w-full text-left px-4 py-2 text-xs font-bold hover:bg-[#FFF8EE] text-[#2D2A26] hover:text-[#FF5C38] transition-colors"
                   >
-                    Interactive ASMR Squeeze Lab
+                    🔬 Interactive ASMR Squeeze Lab
                   </button>
                 </div>
               )}

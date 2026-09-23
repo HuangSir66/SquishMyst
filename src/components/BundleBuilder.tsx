@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, ShoppingBag, Plus, Trash2, CheckCircle2, Gift, Award } from 'lucide-react';
-import { DumplingProduct } from '../types';
+import { Sparkles, ShoppingBag, Plus, Trash2, CheckCircle2, Gift, Award, Filter } from 'lucide-react';
+import { DumplingProduct, ToyType } from '../types';
 import { DUMPLING_PRODUCTS } from '../data/dumplings';
 import { DumplingGraphic } from './DumplingGraphic';
 import { playPopSound, playSquishSound, playCelebrationChime } from '../utils/sound';
@@ -18,6 +18,7 @@ interface BundleBuilderProps {
 
 export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart }) => {
   const [bundleSize, setBundleSize] = useState<3 | 6>(3);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [selectedDumplings, setSelectedDumplings] = useState<DumplingProduct[]>([
     DUMPLING_PRODUCTS[0],
     DUMPLING_PRODUCTS[1],
@@ -28,13 +29,17 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
     (p) => !p.isChaseExclusive && p.salesMode !== 'chase_exclusive' && p.category !== 'accessories'
   );
 
+  const displayedList = availableDumplings.filter((p) => {
+    if (selectedCategoryFilter === 'all') return true;
+    return p.toyType === selectedCategoryFilter;
+  });
+
   const discountRate = bundleSize === 3 ? 0.15 : 0.25;
 
   const handleSelectSize = (size: 3 | 6) => {
     playPopSound();
     setBundleSize(size);
     if (size === 6 && selectedDumplings.length < 6) {
-      // Fill up remaining slots with popular dumplings
       const needed = 6 - selectedDumplings.length;
       const extras = availableDumplings.slice(0, needed);
       setSelectedDumplings((prev) => [...prev, ...extras]);
@@ -70,9 +75,9 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
     });
 
     onAddBundleToCart({
-      title: bundleSize === 3 ? 'Classic 3-Bao Dim Sum Steamer Bundle' : 'Imperial 6-Bao Double-Tier Feast Bundle',
+      title: bundleSize === 3 ? 'Classic 3-Piece Squishy Studio Gift Bundle' : 'Deluxe 6-Piece Squishy Studio Grand Feast',
       dumplings: selectedDumplings,
-      tierName: `${bundleSize}-Bao Steamer (${Math.round(discountRate * 100)}% OFF)`,
+      tierName: `${bundleSize}-Piece Bundle (${Math.round(discountRate * 100)}% OFF)`,
       totalPrice: discountedTotal,
       originalPrice: rawTotal,
     });
@@ -86,13 +91,13 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 bg-[#FFF3D6] text-[#8C5E12] px-4 py-1.5 rounded-full border border-[#F5D890] text-xs font-extrabold uppercase tracking-wider mb-3">
             <Gift className="w-3.5 h-3.5 text-[#E25C40]" />
-            <span>Interactive Custom Steamer Builder</span>
+            <span>Interactive Custom Gift Box Builder</span>
           </div>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-[#2D2A26] tracking-tight">
-            Build Your Own Dim Sum Steamer
+            Mix & Match Custom Squishy Bundle
           </h2>
           <p className="text-sm text-[#736B60] mt-2">
-            Pick your favorite flavors, pack them into a custom bamboo steamer, and unlock up to <strong>25% OFF</strong> instantly!
+            Combine any animals, pastries, fruits, and dim sum dumplings into a custom gift presentation box and save up to <strong>25% OFF</strong>!
           </p>
         </div>
 
@@ -107,7 +112,7 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
                   : 'text-[#61594E] hover:text-black'
               }`}
             >
-              <span>3-Bao Trio Steamer</span>
+              <span>3-Squishy Trio Box</span>
               <span className="text-[11px] bg-[#10B981] text-white px-2 py-0.5 rounded-full font-bold">
                 Save 15%
               </span>
@@ -121,7 +126,7 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
                   : 'text-[#61594E] hover:text-black'
               }`}
             >
-              <span>6-Bao Double-Tier Feast</span>
+              <span>6-Squishy Grand Feast</span>
               <span className="text-[11px] bg-[#E25C40] text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
                 Save 25% + Free Gift
               </span>
@@ -137,20 +142,19 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
             <div className="flex items-center justify-between pb-4 border-b border-[#F0E6D8]">
               <div>
                 <h3 className="font-display font-bold text-lg text-[#2D2A26]">
-                  {bundleSize === 3 ? 'Classic Bamboo Steamer (3 Slots)' : 'Double-Tier Grand Steamer (6 Slots)'}
+                  {bundleSize === 3 ? 'Classic Collector Box (3 Slots)' : 'Grand Double-Tier Feast (6 Slots)'}
                 </h3>
                 <p className="text-xs text-[#8C8276]">
                   {selectedDumplings.length} of {bundleSize} spots filled
                 </p>
               </div>
               <span className="text-xs font-bold text-[#E25C40] bg-[#FFEDE8] px-3 py-1 rounded-full">
-                🎋 Bamboo Steamer Included Free
+                🎋 Display Steamer & Tray Included
               </span>
             </div>
 
             {/* Steamer Visual Container */}
             <div className="my-6 relative p-6 bg-[#FBF8F3] rounded-3xl border-4 border-[#C89B65] shadow-inner">
-              {/* Steamer bamboo texture rings */}
               <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-40 bg-[radial-gradient(#C89B65_1px,transparent_1px)] [background-size:16px_16px]" />
 
               <div className="grid grid-cols-3 gap-3 relative z-10 min-h-[220px]">
@@ -170,7 +174,7 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
                           <button
                             onClick={() => handleRemoveIndex(idx)}
                             className="absolute -top-2 -right-2 w-6 h-6 bg-[#E25C40] hover:bg-black text-white rounded-full flex items-center justify-center shadow-md transition-colors cursor-pointer z-20"
-                            title="Remove from steamer"
+                            title="Remove item"
                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
@@ -193,106 +197,121 @@ export const BundleBuilder: React.FC<BundleBuilderProps> = ({ onAddBundleToCart 
               {bundleSize === 6 && (
                 <div className="mt-4 pt-3 border-t border-[#EAE2D5] flex items-center justify-center gap-2 text-xs font-bold text-[#10B981]">
                   <Award className="w-4 h-4" />
-                  <span>Includes FREE Spicy Chili Oil Dipping Squishy Toy ($12 value)!</span>
+                  <span>Includes FREE Velvet Revival Care Dusting Kit ($15 value)!</span>
                 </div>
               )}
             </div>
 
-            {/* Price Summary & Checkout Button */}
-            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#E8DAC6] space-y-3">
-              <div className="flex justify-between text-xs text-[#736B60]">
-                <span>Original Individual Price:</span>
-                <span className="line-through">${rawTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-xs text-[#10B981] font-bold">
-                <span>Bundle Savings ({Math.round(discountRate * 100)}% OFF):</span>
-                <span>-${savings.toFixed(2)}</span>
-              </div>
-              <div className="pt-2 border-t border-[#E0D2BE] flex justify-between items-baseline">
-                <span className="font-display font-extrabold text-base text-[#2D2A26]">Bundle Price:</span>
-                <span className="font-display font-extrabold text-2xl text-[#E25C40]">
-                  ${discountedTotal.toFixed(2)}
-                </span>
+            {/* Price Summary Bar & Add CTA */}
+            <div className="pt-4 border-t border-[#F0E6D8] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-display font-black text-3xl text-[#2D2A26]">
+                    ${discountedTotal}
+                  </span>
+                  <span className="text-sm text-[#8C8276] line-through font-bold">
+                    ${rawTotal.toFixed(2)}
+                  </span>
+                  <span className="text-xs bg-[#10B981] text-white px-2 py-0.5 rounded-full font-bold">
+                    Save ${savings}
+                  </span>
+                </div>
+                <p className="text-xs text-[#8C8276] mt-0.5">
+                  Free Tracked Shipping automatically applied!
+                </p>
               </div>
 
               <button
-                id="bundle-add-to-cart-btn"
-                disabled={!isFull}
                 onClick={handleFinishBundle}
-                className={`w-full py-4 rounded-2xl font-extrabold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                disabled={!isFull}
+                className={`w-full sm:w-auto px-8 py-3.5 rounded-full font-black text-sm transition-all flex items-center justify-center gap-2 ${
                   isFull
-                    ? 'bg-[#E25C40] hover:bg-[#CF492D] text-white hover:scale-102'
-                    : 'bg-[#D5C7B4] text-[#7A7165] cursor-not-allowed opacity-75'
+                    ? 'bg-[#E25C40] hover:bg-[#C94A30] text-white shadow-lg hover:scale-105 cursor-pointer'
+                    : 'bg-[#E5D8C5] text-[#8C8276] cursor-not-allowed'
                 }`}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>
-                  {isFull
-                    ? `Add ${bundleSize}-Bao Bundle to Steamer ($${discountedTotal})`
-                    : `Pick ${bundleSize - selectedDumplings.length} more dumpling(s)`}
-                </span>
+                <span>{isFull ? 'Add Custom Bundle to Cart' : `Add ${bundleSize - selectedDumplings.length} more`}</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Menu Picker Options */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-display font-bold text-lg text-[#2D2A26]">
-                Click Flavors to Add
-              </h3>
-              <span className="text-xs text-[#8C8276]">
-                Tap any bao to fill your next open slot
-              </span>
+          {/* Right Column: Specimen Selection Grid */}
+          <div className="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#E0D2BE] shadow-lg">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#F0E6D8]">
+              <div>
+                <h3 className="font-display font-bold text-lg text-[#2D2A26]">
+                  Available Squishy Specimens
+                </h3>
+                <p className="text-xs text-[#8C8276]">
+                  Tap to add to your custom bundle box
+                </p>
+              </div>
+
+              {/* Category Filter Pills in builder */}
+              <div className="flex items-center gap-1 overflow-x-auto">
+                {[
+                  { id: 'all', label: 'All' },
+                  { id: 'animal', label: '🐾 Animals' },
+                  { id: 'bakery', label: '🥐 Bakery' },
+                  { id: 'fruit', label: '🍑 Fruits' },
+                  { id: 'dumpling', label: '🥟 Dim Sum' },
+                ].map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => {
+                      playPopSound();
+                      setSelectedCategoryFilter(c.id);
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      selectedCategoryFilter === c.id
+                        ? 'bg-[#1F1C18] text-white'
+                        : 'bg-[#FAF7F2] text-[#524B43] hover:bg-[#EAE2D5]'
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[560px] overflow-y-auto pr-1">
-              {availableDumplings.map((dumpling) => {
-                const countInBundle = selectedDumplings.filter((d) => d.id === dumpling.id).length;
+            {/* Grid of Choices */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-4 max-h-[380px] overflow-y-auto pr-1">
+              {displayedList.map((d) => {
+                const countInBundle = selectedDumplings.filter((item) => item.id === d.id).length;
                 const canAdd = selectedDumplings.length < bundleSize;
 
                 return (
-                  <div
-                    key={dumpling.id}
-                    onClick={() => canAdd && handleAddDumpling(dumpling)}
-                    className={`p-3.5 bg-white rounded-2xl border-2 transition-all flex items-center gap-3 select-none ${
+                  <button
+                    key={d.id}
+                    onClick={() => handleAddDumpling(d)}
+                    disabled={!canAdd}
+                    className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center text-center relative group cursor-pointer ${
                       canAdd
-                        ? 'border-[#EAE2D5] hover:border-[#E25C40] hover:shadow-md cursor-pointer hover:scale-101'
-                        : 'border-[#F0E6D8] opacity-60 cursor-not-allowed'
+                        ? 'bg-[#FAF7F2] hover:bg-white hover:border-[#E25C40] hover:shadow-md'
+                        : 'bg-[#FAF7F2] opacity-60 cursor-not-allowed border-[#EAE2D5]'
                     }`}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-[#FAF7F2] border border-[#E8DAC6] flex items-center justify-center shrink-0">
-                      <DumplingGraphic type={dumpling.svgArtType} className="w-10 h-10" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-xs text-[#2D2A26] truncate">
-                          {dumpling.name}
-                        </span>
-                        {countInBundle > 0 && (
-                          <span className="text-[10px] font-extrabold bg-[#E25C40] text-white px-1.5 py-0.2 rounded-full">
-                            ×{countInBundle}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-[#736B60] truncate">{dumpling.subtitle}</p>
-                      <span className="text-[11px] font-bold text-[#E25C40] mt-0.5 inline-block">
-                        ${dumpling.price}
+                    {countInBundle > 0 && (
+                      <span className="absolute top-2 right-2 w-5 h-5 bg-[#E25C40] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
+                        {countInBundle}
                       </span>
-                    </div>
+                    )}
 
-                    <button
-                      disabled={!canAdd}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                        canAdd
-                          ? 'bg-[#FAF7F2] hover:bg-[#E25C40] hover:text-white text-[#2D2A26] border border-[#D8C7B0]'
-                          : 'bg-gray-100 text-gray-400'
-                      }`}
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
+                    <DumplingGraphic type={d.svgArtType} className="w-16 h-16 group-hover:scale-105 transition-transform" />
+                    
+                    <span className="font-bold text-xs text-[#2D2A26] mt-2 line-clamp-1 w-full">
+                      {d.name}
+                    </span>
+                    <span className="text-[10px] text-[#736B60] mt-0.5">
+                      ${d.price.toFixed(2)}
+                    </span>
+                    
+                    <span className="mt-2 w-full py-1 bg-white group-hover:bg-[#E25C40] group-hover:text-white border border-[#E0D2BE] rounded-lg text-[10px] font-bold text-[#2D2A26] transition-colors flex items-center justify-center gap-1">
+                      <Plus className="w-3 h-3" />
+                      <span>Add</span>
+                    </span>
+                  </button>
                 );
               })}
             </div>
